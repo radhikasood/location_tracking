@@ -19,7 +19,7 @@ export class LoginPage {
   password : string;
   addCommment:string;
   comment:any=["xyz","ghj","asd"];
-  student:any=[{"name":"xyz ","batch":"2013 ","year":"second"},{"name":"asd ","batch":"2014 ","year":"third"},{"name":"zxc ","batch":"2015 ","year":"final"}]
+  student:any=[{"name":"xyz ","batch":"2013 ","year":"second"},{"name":"abc ","batch":"2014 ","year":"third"},{"name":"rad ","batch":"2015 ","year":"final"}]
   student_name: string;
   student_batch:string;
   student_year: string;
