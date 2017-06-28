@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import {LoginPage} from "../login/login";
+import {LocationTrackerProvider} from "../../providers/location-tracker/location-tracker";
 
 @Component({
   selector: 'page-home',
@@ -8,8 +9,18 @@ import {LoginPage} from "../login/login";
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public locationTracker: LocationTrackerProvider) {
+
   }
+
+  start(){
+    this.locationTracker.startTracking();
+  }
+
+  stop(){
+    this.locationTracker.stopTracking();
+  }
+
   login(){
     this.navCtrl.push(LoginPage);
   }

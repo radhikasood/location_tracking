@@ -12,6 +12,12 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {LoginPage} from "../pages/login/login";
 import {AcountPage} from "../pages/acount/acount";
+import { DatafetchProvider } from '../providers/datafetch/datafetch';
+import {HttpModule} from "@angular/http";
+import { Geolocation } from '@ionic-native/geolocation';
+import { LocationTrackerProvider } from '../providers/location-tracker/location-tracker';
+import {BackgroundGeolocation} from "@ionic-native/background-geolocation";
+
 
 @NgModule({
   declarations: [
@@ -21,10 +27,10 @@ import {AcountPage} from "../pages/acount/acount";
     HomePage,
     TabsPage,
     LoginPage,
-    AcountPage
+    AcountPage,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule,HttpModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -41,7 +47,11 @@ import {AcountPage} from "../pages/acount/acount";
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    DatafetchProvider,
+    Geolocation,
+    LocationTrackerProvider,
+    BackgroundGeolocation,
   ]
 })
 export class AppModule {}

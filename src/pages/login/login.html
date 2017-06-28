@@ -14,6 +14,10 @@
 
 
 <ion-content padding>
+  <ion-item>
+  <button ion-button (click)="getGeolocation()"></button>
+    <p *ngIf="languageShow">lat = {{latitude}} <br> long = {{longitude}}</p>
+  </ion-item>
   <ion-list>
 
     <ion-item>
@@ -46,7 +50,7 @@
   <button ion-button (click)="add_comment()"> Add Comment </button>
 
   <ion-list>
-    <ion-item *ngFor="let s of student">
+    <ion-item *ngFor="let s of student_all">
       <ion-row>
         <p>{{s.name}} \t
           {{s.batch}} \t
@@ -66,7 +70,7 @@
   </ion-row>
   <button ion-button (click)="addStudent()"><ion-icon name="add-circle"> Student</ion-icon></button>
   <ion-row justify-content-end>
-  <button ion-button (click)="account()" ><ion-icon name="log-in"></ion-icon></button>
+  <button ion-button (click)="setData()" ><ion-icon name="log-in"></ion-icon></button>
   </ion-row>
 </ion-content>
 

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {AcountPage} from "../acount/acount";
+import {DatafetchProvider} from "../../providers/datafetch/datafetch";
+import {Headers, RequestOptions, Http} from "@angular/http";
+import { Geolocation } from '@ionic-native/geolocation';
 
 
 /**
@@ -19,12 +22,19 @@ export class LoginPage {
   password : string;
   addCommment:string;
   comment:any=["xyz","ghj","asd"];
-  student:any=[{"name":"xyz ","batch":"2013 ","year":"second"},{"name":"abc ","batch":"2014 ","year":"third"},{"name":"rad ","batch":"2015 ","year":"final"}]
+  student:any;
+  student_all:any;
   student_name: string;
   student_batch:string;
   student_year: string;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  data:any;
+  update:any;
+  latitude:any;
+  longitude:any;
+  languageShow : boolean = false;
+  geoUpdate:any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public dataFetch :DatafetchProvider, public http :Http,private geolocation: Geolocation) {
+    this.getData();
   }
   account(){
     if(this.username == 'radhika' && this.password== '12345') {
@@ -34,9 +44,9 @@ export class LoginPage {
     }
   }
   add_comment(){
-    this.comment.push(this.addCommment);
-    this.addCommment=null
-  }
+  this.comment.push(this.addCommment);
+  this.addCommment=null
+}
   remove(num){
     this.comment.splice(num,1);
   }
@@ -46,7 +56,59 @@ export class LoginPage {
     this.student_batch=null;
     this.student_year=null;
   }
+  getData() {
+    this.dataFetch.load().then((data) => {
+      this.student = data;
+      this.student_all = this.student.students;
+      console.log(data);
+    });
+  }
+    setData(){
+      this.update = {
+        name:this.username,
+        password:this.password,
+      }
+      console.log("data sending");
+      var headers = new Headers();
 
+      headers.append('content-type','application/json;charset=UTF-8');
+      headers.append('Access-Control-Allow-Origin','*');
+      let options = new RequestOptions({headers:headers});
+      this.http.post('https://radhikasood.herokuapp.com/wel', JSON.stringify(this.update),options)
+        .map(res => res.json()).subscribe(data => {
+          console.log(data)
+        }, err => {
+          console.log('Error! : ', err.json);
+          }
+        );
+      }
+
+      getGeolocation(){
+        this.geolocation.getCurrentPosition().then((resp) => {
+          this.latitude = resp.coords.latitude;
+          this.longitude = resp.coords.longitude;
+          this.languageShow = true;
+          console.log("geolocation sending");
+          this.geoUpdate ={
+            latitude:this.latitude,
+            longitude:this.longitude,
+          }
+          var headers = new Headers();
+
+          headers.append('content-type','application/json;charset=UTF-8');
+          headers.append('Access-Control-Allow-Origin','*');
+          let options = new RequestOptions({headers:headers});
+          this.http.post('https://radhikasood.herokuapp.com/geo', JSON.stringify(this.geoUpdate),options)
+            .map(res => res.json()).subscribe(resp => {
+              console.log(resp)
+            }, err => {
+              console.log('Error! : ', err.json);
+            }
+          );
+        }).catch((error) => {
+          console.log('Error getting location', error);
+        });
+      }
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }
